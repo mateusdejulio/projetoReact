@@ -1,62 +1,33 @@
-import { useState } from "react";
-
-export default function FormularioPlanta({ onAdicionarPlanta }) {
-  const [nome, setNome] = useState("");
-  const [tipo, setTipo] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!nome.trim() || !tipo.trim()) return;
-
-    const novaPlanta = {
-      id: crypto.randomUUID(),
-      nome: nome.trim(),
-      tipo: tipo.trim(),
-      regada: false,
-      dataCadastro: new Date().toLocaleDateString("pt-BR"),
-    };
-
-    onAdicionarPlanta(novaPlanta);
-    setNome("");
-    setTipo("");
-  }
-
+export default function CardPlanta({ planta, onDeletar, onAlternarRegada }) {
   return (
-    <div className="formulario-card">
-      <h2 className="formulario-titulo">Cadastrar Nova Planta</h2>
-      <form className="formulario" onSubmit={handleSubmit}>
-        <div className="campo-grupo">
-          <label className="campo-label" htmlFor="nome">
-            Nome da Planta
-          </label>
-          <input
-            id="nome"
-            className="campo-input"
-            type="text"
-            placeholder="Ex: Samambaia da Varanda"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
+    <div className={`card ${planta.regada ? "card--regada" : ""}`}>
+      <div className="card-header">
+        <span className="card-icon">{planta.regada ? "🌱" : "🪴"}</span>
+        {planta.regada && <span className="badge-regada">Regada!</span>}
+      </div>
 
-        <div className="campo-grupo">
-          <label className="campo-label" htmlFor="tipo">
-            Tipo / Espécie
-          </label>
-          <input
-            id="tipo"
-            className="campo-input"
-            type="text"
-            placeholder="Ex: Nephrolepis exaltata"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
-          />
-        </div>
+      <div className="card-body">
+        <h3 className="card-nome">{planta.nome}</h3>
+        <p className="card-tipo">{planta.tipo}</p>
+        <p className="card-data">Cadastrada em {planta.dataCadastro}</p>
+      </div>
 
-        <button className="btn-cadastrar" type="submit">
-          + Adicionar Planta
+      <div className="card-actions">
+        <button
+          className={`btn-regar ${planta.regada ? "btn-regar--ativa" : ""}`}
+          onClick={() => onAlternarRegada(planta.id)}
+        >
+          {planta.regada ? "💧 Já Regada" : "💧 Regar"}
         </button>
-      </form>
+
+        <button
+          className="btn-deletar"
+          onClick={() => onDeletar(planta.id)}
+          aria-label={`Remover ${planta.nome}`}
+        >
+          🗑
+        </button>
+      </div>
     </div>
   );
 }
