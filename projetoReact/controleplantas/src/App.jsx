@@ -34,10 +34,9 @@ export default function App() {
 
         <section className="lista-section">
           <h2 className="lista-titulo">
-            Suas Plantas
-            <span className="lista-count">{plantas.length}</span>
+            Suas Plantas  <span className="lista-count">{plantas.length}</span>
           </h2>
-
+          <br></br>
           {plantas.length === 0 ? (
             <div className="lista-vazia">
               <span className="lista-vazia-icon">🪴</span>
